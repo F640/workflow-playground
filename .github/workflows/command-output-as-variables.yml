@@ -2,13 +2,29 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-script:
+  run-command:
     runs-on: ubuntu-latest
     steps:
-      - name: checkout script repo from upstream
+      - name: checkout repo stuff
         uses: actions/checkout@v4
         with:
           path: test
-  
+          
+      - name: checkout dump repo
+        uses: actions/checkout@v4
+        with:
+          path: dicey
+          ref: throwaway-branch
+          
+      - name: create random file
+        run: base64 /dev/urandom | head -c 5 > dicey/random.txt
+        
       - name: test commit
         run: echo $(cd test && git rev-parse HEAD)
+        
+      - name: deploy script
+        uses: stefanzweifel/git-auto-commit-action@v6
+        with:
+          commit_message: commit display test https://redirect.github.com/F640/workflow-playground/commit/${ cd dicey && git rev-parse HEAD }
+          branch: throwaway-branch
+          repository: dicey
