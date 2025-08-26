@@ -11,4 +11,4 @@ jobs:
           path: test
   
       - name: test commit
-        run: echo ${ cd test && git rev-parse HEAD }
+        run: echo $(cd test && git rev-parse HEAD)
