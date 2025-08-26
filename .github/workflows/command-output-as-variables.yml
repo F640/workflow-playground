@@ -24,10 +24,13 @@ jobs:
         
       - name: test commit
         run: echo $(cd test && git rev-parse HEAD)
+
+      - name: retrieve throwaway-branch commmit
+        run: echo "MEOW=$(cd dicey && git rev-parse HEAD)" >> $MEOW
         
       - name: deploy script
         uses: stefanzweifel/git-auto-commit-action@v6
         with:
-          commit_message: commit display test https://redirect.github.com/F640/workflow-playground/commit/${{ cd dicey && git rev-parse HEAD }}
+          commit_message: commit display test https://redirect.github.com/F640/workflow-playground/commit/${{ env.MEOW }}
           branch: throwaway-branch
           repository: dicey
